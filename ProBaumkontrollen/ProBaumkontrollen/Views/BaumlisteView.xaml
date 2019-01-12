@@ -1,0 +1,130 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="ProBaumkontrollen.Views.BaumlisteView"
+             xmlns:behaviors="clr-namespace:ProBaumkontrollen.Behaviors;assembly=ProBaumkontrollen"
+             xmlns:converters="clr-namespace:ProBaumkontrollen.Converters"
+             xmlns:views="clr-namespace:ProBaumkontrollen.Views;assembly=ProBaumkontrollen"
+             xmlns:viewModelBase="clr-namespace:ProBaumkontrollen.ViewModels.Base;assembly=ProBaumkontrollen"           
+             viewModelBase:ViewModelLocator.AutoWireViewModel="true"
+             Title="Baumliste">
+    <ContentPage.Resources>
+        <ResourceDictionary>
+            <converters:BoolToJaNeinConverter x:Key="BoolToJaNeinConverter"/>
+        </ResourceDictionary>
+    </ContentPage.Resources>
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="Auto"/>
+        </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition/>
+        </Grid.ColumnDefinitions>
+
+        <ScrollView Grid.Column="0" Grid.Row="1" Orientation="Horizontal">
+            <ListView ItemsSource="{Binding BaumItemListe}"  HorizontalOptions="Center" Grid.Column="0" Grid.Row="1" WidthRequest="2800" SelectedItem="{Binding BaumItemSelected}">
+                <ListView.Header>
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="55"/>
+                            <ColumnDefinition Width="80"/>
+                            <ColumnDefinition Width="120"/>
+                            <ColumnDefinition Width="130"/>
+                            <ColumnDefinition Width="130"/>
+                            <ColumnDefinition Width="110"/>
+                            <ColumnDefinition Width="120"/>
+                            <ColumnDefinition Width="130"/>
+                            <ColumnDefinition Width="130"/>
+                            <ColumnDefinition Width="130"/>
+                            <ColumnDefinition Width="80"/>
+                            <ColumnDefinition Width="135"/>
+                            <ColumnDefinition Width="135"/>
+                            <ColumnDefinition Width="100"/>
+                            <ColumnDefinition Width="130"/>
+                            <ColumnDefinition Width="100"/>
+                            <ColumnDefinition Width="130"/>
+                            <ColumnDefinition Width="100"/>
+                        </Grid.ColumnDefinitions>
+                        <Label Text="BaumNr" x:Name="header0" Grid.Column="0"/>
+                        <Label Text="PlakettenNr" x:Name="header1" Grid.Column="1"/>
+                        <Label Text="Straße" x:Name="header2" Grid.Column="2"/>
+                        <Label Text="Baumart Deutsch" x:Name="header3" Grid.Column="3"/>
+                        <Label Text="Baumart Botanisch" x:Name="header4"  Grid.Column="4"/>
+                        <Label Text="Kontrolldatum" x:Name="header5" Grid.Column="5"/>
+                        <Label Text="Kontrollintervall" x:Name="header6" Grid.Column="6"/>
+                        <Label Text="Entwicklungsphase" x:Name="header7" Grid.Column="7"/>
+                        <Label Text="Schädigungsgrad" x:Name="header8" Grid.Column="8"/>
+                        <Label Text="Baumhöhenbereich" x:Name="header9" Grid.Column="9"/>
+                        <Label Text="Baumhöhe" x:Name="header10" Grid.Column="10"/>
+                        <Label Text="Kronendurchmesser" x:Name="header11" Grid.Column="11"/>
+                        <Label Text="Stammdurchmesser" x:Name="header12" Grid.Column="12"/>
+                        <Label Text="Stammanzahl" x:Name="header13" Grid.Column="13"/>
+                        <Label Text="Schadsymptome" x:Name="header14" Grid.Column="14"/>
+                        <Label Text="Verkehrssicher" x:Name="header15" Grid.Column="15"/>
+                        <Label Text="Maßnahmen" x:Name="header16" Grid.Column="16"/>
+                        <Label Text="Ausführen Bis" x:Name="header17" Grid.Column="17"/>
+                    </Grid>
+                </ListView.Header>
+                <ListView.ItemTemplate>
+                    <DataTemplate>
+                        <ViewCell>
+                            <Grid>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="55"/>
+                                    <ColumnDefinition Width="80"/>
+                                    <ColumnDefinition Width="120"/>
+                                    <ColumnDefinition Width="130"/>
+                                    <ColumnDefinition Width="130"/>
+                                    <ColumnDefinition Width="110"/>
+                                    <ColumnDefinition Width="120"/>
+                                    <ColumnDefinition Width="130"/>
+                                    <ColumnDefinition Width="130"/>
+                                    <ColumnDefinition Width="130"/>
+                                    <ColumnDefinition Width="80"/>
+                                    <ColumnDefinition Width="135"/>
+                                    <ColumnDefinition Width="135"/>
+                                    <ColumnDefinition Width="100"/>
+                                    <ColumnDefinition Width="130"/>
+                                    <ColumnDefinition Width="100"/>
+                                    <ColumnDefinition Width="130"/>
+                                    <ColumnDefinition Width="100"/>
+                                </Grid.ColumnDefinitions>
+                                <Label Text="{Binding baum.baumNr}" Grid.Column="0"/>
+                                <Label Text="{Binding baum.plakettenNr}" Grid.Column="1"/>
+                                <Label Text="{Binding straße.name}" Grid.Column="2"/>
+                                <Label Text="{Binding baumart.NameDeutsch}" Grid.Column="3"/>
+                                <Label Text="{Binding baumart.NameBotanisch}" Grid.Column="4"/>
+                                <Label Text="{Binding kontrolle.kontrolldatum}" Grid.Column="5"/>
+                                <Label Text="{Binding kontrolle.kontrollintervall}" Grid.Column="6"/>
+                                <Label Text="{Binding entwicklungsphase.name}" Grid.Column="7"/>
+                                <Label Text="{Binding schädigungsgrad.name}" Grid.Column="8"/>
+                                <Label Text="{Binding baumhöhenbereich.name}" Grid.Column="9"/>
+                                <Label Text="{Binding kontrolle.baumhöhe}" Grid.Column="10"/>
+                                <Label Text="{Binding kontrolle.kronendurchmesser}" Grid.Column="11"/>
+                                <Label Text="{Binding kontrolle.stammdurchmesser}" Grid.Column="12"/>
+                                <Label Text="{Binding kontrolle.stammanzahl}" Grid.Column="13"/>
+                                <Label Text="{Binding kontrolle.schadsymptome}" Grid.Column="14"/>
+                                <Label Text="{Binding kontrolle.verkehrssicher, Converter={StaticResource BoolToJaNeinConverter}}" Grid.Column="15"/>
+                                <Label Text="{Binding kontrolle.maßnahmen}" Grid.Column="16"/>
+                                <Label Text="{Binding ausführenBis.name}" Grid.Column="17"/>
+                            </Grid>
+                        </ViewCell>
+                    </DataTemplate>
+                </ListView.ItemTemplate>
+                <!--<ListView.Behaviors>
+                    <behaviors:EventToCommandBehavior
+						EventName="ItemSelected"
+						Command="{Binding BaumItemWasSelectedCommand}"/>
+                </ListView.Behaviors>-->
+            </ListView>
+        </ScrollView>
+        <StackLayout Orientation="Horizontal" Grid.Row="2" Grid.Column="0">
+            <Button Text="Zurück" Command="{Binding BackCommand}"/>
+            <Button Text="Details anzeigen" Command="{Binding ShowDetailsCommand}"/>
+        </StackLayout>
+        
+        
+    </Grid>
+</ContentPage>

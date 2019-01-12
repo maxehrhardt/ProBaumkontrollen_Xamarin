@@ -1,0 +1,89 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="ProBaumkontrollen.Views.KontrolleFilterView"
+             xmlns:behaviors="clr-namespace:ProBaumkontrollen.Behaviors;assembly=ProBaumkontrollen"
+             xmlns:converters="clr-namespace:ProBaumkontrollen.Converters"
+             xmlns:views="clr-namespace:ProBaumkontrollen.Views;assembly=ProBaumkontrollen"
+             xmlns:viewModelBase="clr-namespace:ProBaumkontrollen.ViewModels.Base;assembly=ProBaumkontrollen"           
+             viewModelBase:ViewModelLocator.AutoWireViewModel="true"
+             x:Name="KontrolleFilter"
+             Title="KontrolleFilter">
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="Auto"/>
+        </Grid.RowDefinitions>
+  
+        <StackLayout Orientation="Vertical" Grid.Row="0">
+            <Label Text="Suchkriterien" FontSize="Large"/>
+          
+            <!--BaumNr-->
+            <StackLayout Orientation="Horizontal">
+                <Switch x:Name="baumNrSwitch"/>
+                <Label Text="Baum Nummer" VerticalOptions="Center" />
+            </StackLayout>
+            <StackLayout Orientation="Horizontal">
+                <Label Text="Min." VerticalOptions="Center" />
+                <Entry/>
+                <Label Text="Max." VerticalOptions="Center"/>
+                <Entry/>
+                <StackLayout.Triggers>
+                    <DataTrigger TargetType="StackLayout"  Binding="{Binding Source={x:Reference baumNrSwitch}, Path=IsToggled}" Value="False">
+                        <Setter Property="IsVisible" Value="False"/>
+                    </DataTrigger>
+                </StackLayout.Triggers>
+            </StackLayout>
+        
+            <!--Straße-->
+            <StackLayout Orientation="Horizontal">
+                <Switch x:Name="straßeSwitch"/>
+                <Label Text="Straße" VerticalOptions="Center"/>
+            </StackLayout>
+            <StackLayout Orientation="Horizontal">
+                <Label Text="Name" VerticalOptions="Center"/>
+                <StackLayout Orientation="Vertical">
+                    <Entry  x:Name="entryStraße" Text="{Binding StraßeSelected.Value.name, Mode=TwoWay}" VerticalOptions="Fill">
+                        <Entry.Behaviors>
+                            <behaviors:EventToCommandBehavior
+						EventName="TextChanged"
+						Command="{Binding UpdateStraßeCommand}"/>
+                        </Entry.Behaviors>
+                    </Entry>
+                    <ListView  ItemsSource="{Binding StraßenFiltered}" VerticalOptions="Fill" HeightRequest="40">
+                        <ListView.ItemTemplate>
+                            <DataTemplate>
+                                <ViewCell>
+                                    <ContentView>
+                                        <Label Text="{Binding name}"/>
+                                    </ContentView>
+                                </ViewCell>
+                            </DataTemplate>
+                        </ListView.ItemTemplate>
+                        <ListView.Behaviors>
+                            <behaviors:EventToCommandBehavior
+						EventName="ItemSelected"
+						Command="{Binding StraßeWasSelectedCommand}"/>
+                        </ListView.Behaviors>
+                        <ListView.Triggers>
+                            <DataTrigger TargetType="ListView"  Binding="{Binding Source={x:Reference entryStraße}, Path=IsFocused}" Value="False">
+                                <Setter Property="IsVisible" Value="False"/>
+                            </DataTrigger>
+                        </ListView.Triggers>
+                    </ListView>
+                </StackLayout>
+                <StackLayout.Triggers>
+                    <DataTrigger TargetType="StackLayout"  Binding="{Binding Source={x:Reference straßeSwitch}, Path=IsToggled}" Value="False">
+                        <Setter Property="IsVisible" Value="False"/>
+                    </DataTrigger>
+                </StackLayout.Triggers>
+            </StackLayout>
+
+            
+        </StackLayout>
+        <StackLayout Orientation="Horizontal" Grid.Row="1">
+            <Button Text="Zurück" Command="{Binding BackCommand}"/>
+            <Button Text="Liste anzeigen" Command="{Binding ShowListCommand}"/>
+        </StackLayout>
+    </Grid>
+</ContentPage>

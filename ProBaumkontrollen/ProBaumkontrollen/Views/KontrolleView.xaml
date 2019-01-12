@@ -1,0 +1,108 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="ProBaumkontrollen.Views.KontrolleView"
+             xmlns:behaviors="clr-namespace:ProBaumkontrollen.Behaviors;assembly=ProBaumkontrollen"
+             xmlns:converters="clr-namespace:ProBaumkontrollen.Converters"
+             xmlns:views="clr-namespace:ProBaumkontrollen.Views;assembly=ProBaumkontrollen"
+             xmlns:viewModelBase="clr-namespace:ProBaumkontrollen.ViewModels.Base;assembly=ProBaumkontrollen"           
+             viewModelBase:ViewModelLocator.AutoWireViewModel="true"
+             x:Name="Kontrolle"
+             Title="Kontrolle">
+    <StackLayout Orientation="Vertical">
+        
+        <Label Text="Kontrolle" FontSize="Large"/>
+        
+        <!--Kontrolldatum-->
+        <Label Text="Kontrolldatum" FontSize="Medium"/>
+        <StackLayout Orientation="Horizontal">
+            <Label Text="letzte" FontSize="Small"/>
+            <Entry Text="{Binding Kontrolle_old.Value.kontrolldatum}" InputTransparent="True"/>
+        </StackLayout>
+        <StackLayout Orientation="Horizontal">
+            <Label Text="aktuell" FontSize="Small"/>
+            <Entry Text="{Binding Kontrolle.Value.kontrolldatum}" InputTransparent="True"/>
+        </StackLayout>
+
+        <!--Kontrollintervall-->
+        <Label Text="Kontrollintervall" FontSize="Medium"/>
+        <StackLayout Orientation="Horizontal">
+            <Label Text="letzte" FontSize="Small"/>
+            <Entry Text="{Binding Baum_old.Value.kontrollintervall}" InputTransparent="True"/>
+        </StackLayout>
+        <StackLayout Orientation="Horizontal">
+            <Label Text="aktuell" FontSize="Small"/>
+            <Entry Text="{Binding Baum.Value.kontrollintervall}" InputTransparent="True"/>
+        </StackLayout>
+
+        <!--Abmessungen-->
+        <Label Text="Abmessungen" FontSize="Medium"/>
+        <Label Text="Baumhöhenbereich [m]" FontSize="Small"/>
+        <StackLayout Orientation="Horizontal">
+            <Label Text="letzte" FontSize="Small"/>
+            <Picker ItemsSource="{Binding AllBaumhöhenbereiche}" ItemDisplayBinding="{Binding name}" SelectedIndex="{Binding BaumhöhenbereichSelected_old.id, Converter={StaticResource IdToIndexConverter}}"/>
+        </StackLayout>
+        <StackLayout Orientation="Horizontal">
+            <Label Text="aktuell" FontSize="Small"/>
+            <Picker ItemsSource="{Binding AllBaumhöhenbereiche}" ItemDisplayBinding="{Binding name}" SelectedIndex="{Binding BaumhöhenbereichSelected.id, Converter={StaticResource IdToIndexConverter}}"/>
+        </StackLayout>
+        
+        <Label Text="Baumhöhe [m]" FontSize="Small"/>
+        <StackLayout Orientation="Horizontal">
+            <Label Text="letzte" FontSize="Small"/>
+            <Entry Text="{Binding Kontrolle_old.Value.baumhöhe}" Keyboard="Numeric" InputTransparent="True"/>
+        </StackLayout>
+        <StackLayout Orientation="Horizontal">
+            <Label Text="aktuell" FontSize="Small"/>
+            <Entry Text="{Binding Kontrolle.Value.baumhöhe}" Keyboard="Numeric">
+                <Entry.Behaviors>
+                    <behaviors:EventToCommandBehavior
+						EventName="Completed"
+						Command="{Binding BaumhöheCompletedCommand}"/>
+                    <behaviors:EventToCommandBehavior
+                        EventName="Unfocused"
+                        Command="{Binding BaumhöheCompletedCommand}"/>
+                </Entry.Behaviors>
+            </Entry>
+        </StackLayout>
+
+        <Label Text="Kronendurchmesser [m]" FontSize="Small"/>
+        <StackLayout Orientation="Horizontal">
+            <Label Text="letzte" FontSize="Small"/>
+            <Entry Text="{Binding Kontrolle_old.Value.kronendurchmesser}" Keyboard="Numeric"/>
+        </StackLayout>
+        <StackLayout Orientation="Horizontal">
+            <Label Text="aktuell" FontSize="Small"/>
+            <Entry Text="{Binding Kontrolle.Value.kronendurchmesser}" Keyboard="Numeric"/>
+        </StackLayout>
+
+        <Label Text="Stammdurchmesser [cm]" FontSize="Small"/>
+        <StackLayout Orientation="Horizontal">
+            <Label Text="letzte" FontSize="Small"/>
+            <Entry Text="{Binding Kontrolle_old.Value.stammdurchmesser}" Keyboard="Numeric"/>
+        </StackLayout>
+        <StackLayout Orientation="Horizontal">
+            <Label Text="aktuell" FontSize="Small"/>
+            <Entry Text="{Binding Kontrolle.Value.stammdurchmesser}" Keyboard="Numeric"/>
+        </StackLayout>
+
+        <Label Text="Stammdanzahl " FontSize="Small"/>
+        <StackLayout Orientation="Horizontal">
+            <Label Text="letzte" FontSize="Small"/>
+            <Entry Text="{Binding Kontrolle_old.Value.stammanzahl}" Keyboard="Numeric"/>
+        </StackLayout>
+        <StackLayout Orientation="Horizontal">
+            <Label Text="aktuell" FontSize="Small"/>
+            <Entry Text="{Binding Kontrolle.Value.stammanzahl}" Keyboard="Numeric"/>
+        </StackLayout>
+
+        <Label Text="Zustand" FontSize="Medium"/>
+        <Label Text="Entwicklungsphase" FontSize="Small"/>
+        <StackLayout Orientation="Horizontal">
+            <Label Text="letzte" FontSize="Small"/>
+        </StackLayout>
+        <StackLayout Orientation="Horizontal">
+            <Label Text="aktuell" FontSize="Small"/>
+        </StackLayout>
+    </StackLayout>
+</ContentPage>

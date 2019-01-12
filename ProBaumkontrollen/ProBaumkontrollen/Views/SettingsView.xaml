@@ -1,0 +1,10 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="ProBaumkontrollen.Views.SettingsView"
+             xmlns:views="clr-namespace:ProBaumkontrollen.Views;assembly=ProBaumkontrollen"
+             xmlns:viewModelBase="clr-namespace:ProBaumkontrollen.ViewModels.Base;assembly=ProBaumkontrollen"           
+             viewModelBase:ViewModelLocator.AutoWireViewModel="true"
+             Title="Einstellungen">
+    
+</ContentPage>

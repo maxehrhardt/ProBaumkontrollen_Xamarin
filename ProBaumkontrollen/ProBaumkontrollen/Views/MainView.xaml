@@ -1,0 +1,181 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="ProBaumkontrollen.Views.MainView"
+             xmlns:views="clr-namespace:ProBaumkontrollen.Views;assembly=ProBaumkontrollen"           
+             xmlns:converters="clr-namespace:ProBaumkontrollen.Converters"
+             xmlns:behaviors="clr-namespace:ProBaumkontrollen.Behaviors;assembly=ProBaumkontrollen"
+             xmlns:iconize="clr-namespace:Plugin.Iconize;assembly=Plugin.Iconize"
+             xmlns:viewModelBase="clr-namespace:ProBaumkontrollen.ViewModels.Base;assembly=ProBaumkontrollen"           
+             viewModelBase:ViewModelLocator.AutoWireViewModel="true">
+    <ContentPage.Resources>
+        <ResourceDictionary>
+            <converters:ProjectEmptyConverter x:Key="ProjectEmptyConverter"/>
+        </ResourceDictionary>
+    </ContentPage.Resources>
+    <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="*"/>
+            <ColumnDefinition Width="*"/>
+            <ColumnDefinition Width="*"/>
+        </Grid.ColumnDefinitions>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+
+        <Grid Grid.Column="1" Grid.Row="0">
+            <StackLayout  Orientation="Vertical" VerticalOptions="End">
+                <Label Text="Benutzer:"/>
+                <Label Text="Aktuelles Projekt:"/>
+                <StackLayout x:Name="projectEntryStack" Orientation="Vertical">
+                    <!--<Label Text="{Binding ActiveProject}"/>-->
+                    <Label x:Name="activeProject" Text="{Binding ActiveProject, Converter=ProjectEmptyConverter}"/>
+
+
+
+                    <Entry x:Name="projectEntry" Text="{Binding EnteredProjectName}">
+                        <Entry.Behaviors>
+                            <behaviors:EventToCommandBehavior
+						        EventName="TextChanged"
+						        Command="{Binding UpdateProjectCommand}"/>
+                        </Entry.Behaviors>
+                        <VisualStateManager.VisualStateGroups>
+                            <VisualStateGroup x:Name="ProjectEntry">
+                                <VisualState x:Name="NormalState">
+                                    <VisualState.Setters>
+                                        <Setter Property="IsVisible" Value="False" />
+                                    </VisualState.Setters>
+                                </VisualState>
+
+                                <VisualState x:Name="AddProjectState">
+                                    <VisualState.Setters>
+                                        <Setter Property="IsVisible" Value="True" />
+                                    </VisualState.Setters>
+                                </VisualState>
+
+                                <VisualState x:Name="FindProjectState">
+                                    <VisualState.Setters>
+                                        <Setter Property="IsVisible" Value="False" />
+                                    </VisualState.Setters>
+                                </VisualState>
+                            </VisualStateGroup>
+                        </VisualStateManager.VisualStateGroups>
+                    </Entry>
+
+                    <ListView x:Name="projectsList" ItemsSource="{Binding AllProjects}" IsVisible="False">
+                        <VisualStateManager.VisualStateGroups>
+                            <VisualStateGroup x:Name="ProjectEntry">
+                                <VisualState x:Name="NormalState">
+                                    <VisualState.Setters>
+                                        <Setter Property="IsVisible" Value="False" />
+                                    </VisualState.Setters>
+                                </VisualState>
+
+                                <VisualState x:Name="AddProjectState">
+                                    <VisualState.Setters>
+                                        <Setter Property="IsVisible" Value="False" />
+                                    </VisualState.Setters>
+                                </VisualState>
+
+                                <VisualState x:Name="FindProjectState">
+                                    <VisualState.Setters>
+                                        <Setter Property="IsVisible" Value="True" />
+                                    </VisualState.Setters>
+                                </VisualState>
+                            </VisualStateGroup>
+                        </VisualStateManager.VisualStateGroups>
+                    </ListView>
+
+                    <StackLayout Orientation="Horizontal">
+                        <VisualStateManager.VisualStateGroups>
+                            <VisualStateGroup x:Name="ProjectEntry">
+                                <VisualState x:Name="NormalState">
+                                    <VisualState.Setters>
+                                        <Setter Property="IsVisible" Value="True" />
+                                    </VisualState.Setters>
+                                </VisualState>
+
+                                <VisualState x:Name="AddProjectState">
+                                    <VisualState.Setters>
+                                        <Setter Property="IsVisible" Value="False" />
+                                    </VisualState.Setters>
+                                </VisualState>
+
+                                <VisualState x:Name="FindProjectState">
+                                    <VisualState.Setters>
+                                        <Setter Property="IsVisible" Value="False" />
+                                    </VisualState.Setters>
+                                </VisualState>
+                            </VisualStateGroup>
+                        </VisualStateManager.VisualStateGroups>
+                        <!--<Button x:Name="FindProject" Text="Projekt Auswählen" Clicked="FindProject_Clicked" Command="{Binding ChooseProjectCommand}"/>-->
+                        <!--<Button x:Name="AddProject" Text="Projekt Erstellen" Clicked="AddProject_Clicked" Command="{Binding CreateProjectCommand}"/>-->
+                        <iconize:IconButton x:Name="FindProject" Text="ion-search" Clicked="FindProject_Clicked"/>
+                        <iconize:IconButton x:Name="AddProject" Text="ion-android-add"  Clicked="AddProject_Clicked"/>
+                    </StackLayout>
+                    <StackLayout Orientation="Horizontal">
+                        <VisualStateManager.VisualStateGroups>
+                            <VisualStateGroup x:Name="ProjectEntry">
+                                <VisualState x:Name="NormalState">
+                                    <VisualState.Setters>
+                                        <Setter Property="IsVisible" Value="False" />
+                                    </VisualState.Setters>
+                                </VisualState>
+
+                                <VisualState x:Name="AddProjectState">
+                                    <VisualState.Setters>
+                                        <Setter Property="IsVisible" Value="True" />
+                                    </VisualState.Setters>
+                                </VisualState>
+
+                                <VisualState x:Name="FindProjectState">
+                                    <VisualState.Setters>
+                                        <Setter Property="IsVisible" Value="False" />
+                                    </VisualState.Setters>
+                                </VisualState>
+                            </VisualStateGroup>
+                        </VisualStateManager.VisualStateGroups>
+                        <iconize:IconButton x:Name="AcceptAddProject" Text="ion-checkmark-circled" Command="{Binding AddProjectCommand}" Clicked="AcceptDecline_Clicked"/>
+                        <iconize:IconButton x:Name="DeclineAddProject" Text="ion-close-circled" Clicked="AcceptDecline_Clicked"/>
+                    </StackLayout>
+                    <StackLayout Orientation="Horizontal">
+                        <VisualStateManager.VisualStateGroups>
+                            <VisualStateGroup x:Name="ProjectEntry">
+                                <VisualState x:Name="NormalState">
+                                    <VisualState.Setters>
+                                        <Setter Property="IsVisible" Value="False" />
+                                    </VisualState.Setters>
+                                </VisualState>
+
+                                <VisualState x:Name="AddProjectState">
+                                    <VisualState.Setters>
+                                        <Setter Property="IsVisible" Value="False" />
+                                    </VisualState.Setters>
+                                </VisualState>
+
+                                <VisualState x:Name="FindProjectState">
+                                    <VisualState.Setters>
+                                        <Setter Property="IsVisible" Value="True" />
+                                    </VisualState.Setters>
+                                </VisualState>
+                            </VisualStateGroup>
+                        </VisualStateManager.VisualStateGroups>
+                        <iconize:IconButton x:Name="AcceptFindProject" Text="ion-checkmark"  Command="{Binding ChooseProjectCommand}"  Clicked="AcceptDecline_Clicked"/>
+                        <iconize:IconButton x:Name="DeclineFindProject" Text="ion-close" Clicked="AcceptDecline_Clicked"/>
+                    </StackLayout>
+                </StackLayout>
+            </StackLayout>
+        </Grid>
+
+        <StackLayout Orientation="Vertical" Grid.Column="1" Grid.Row="1" VerticalOptions="End">
+            <Button Text="Einstellungen" Command="{Binding SettingsCommand}"/>
+            <Button Text="Neuaufnahme" Command="{Binding NeuaufnahmeCommand}"/>
+            <Button Text="Baumliste" Command="{Binding BaumlisteCommand}"/>
+            <Button Text="Kontrolle durchführen" Command="{Binding KontrolleCommand}"/>
+            <Button Text="Karte" Command="{Binding NavigateToMapViewCommand}"/>
+        </StackLayout>
+    </Grid>
+
+</ContentPage>

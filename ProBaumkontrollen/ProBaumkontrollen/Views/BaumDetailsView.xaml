@@ -1,0 +1,431 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="ProBaumkontrollen.Views.BaumDetailsView"
+             xmlns:behaviors="clr-namespace:ProBaumkontrollen.Behaviors;assembly=ProBaumkontrollen"
+             xmlns:converters="clr-namespace:ProBaumkontrollen.Converters"
+             xmlns:views="clr-namespace:ProBaumkontrollen.Views;assembly=ProBaumkontrollen"
+             xmlns:viewModelBase="clr-namespace:ProBaumkontrollen.ViewModels.Base;assembly=ProBaumkontrollen"           
+             viewModelBase:ViewModelLocator.AutoWireViewModel="true"
+             x:Name="BaumDetails"
+             Title="Baumdetails">
+
+    <ContentPage.Resources>
+        <ResourceDictionary>
+            <converters:VerkehrssicherheitToStringConverter x:Key="VerkehrssicherheitToStringConverter"/>
+            <converters:IdToIndexConverter x:Key="IdToIndexConverter"/>
+        </ResourceDictionary>
+    </ContentPage.Resources>
+    <StackLayout Orientation="Vertical" >
+        <ScrollView Orientation="Vertical" VerticalOptions="Center">
+            <StackLayout Orientation="Vertical" Padding="30">
+                <Label Text="Baumdaten" FontSize="Large"/>
+                <StackLayout Orientation="Horizontal">
+                    <Label  Text="Straße" FontSize="Small"/>
+                    <Button Text="+" Command="{Binding AddStraßeCommand}"/>
+                </StackLayout>
+
+                <Entry  x:Name="entryStraße" Text="{Binding StraßeSelected.Value.name , Mode=TwoWay}" VerticalOptions="Fill">
+                    <Entry.Behaviors>
+                        <behaviors:EventToCommandBehavior
+						EventName="TextChanged"
+						Command="{Binding UpdateStraßeCommand}"/>
+                    </Entry.Behaviors>
+                </Entry>
+                <ListView  ItemsSource="{Binding StraßenFiltered}" VerticalOptions="Fill" HeightRequest="40">
+                    <ListView.ItemTemplate>
+                        <DataTemplate>
+                            <ViewCell>
+                                <ContentView>
+                                    <Label Text="{Binding name}"/>
+                                </ContentView>
+                            </ViewCell>
+                        </DataTemplate>
+                    </ListView.ItemTemplate>
+                    <ListView.Behaviors>
+                        <behaviors:EventToCommandBehavior
+						EventName="ItemSelected"
+						Command="{Binding StraßeWasSelectedCommand}"/>
+                    </ListView.Behaviors>
+                    <ListView.Triggers>
+                        <DataTrigger TargetType="ListView"  Binding="{Binding Source={x:Reference entryStraße}, Path=IsFocused}" Value="False">
+                            <Setter Property="IsVisible" Value="False"/>
+                        </DataTrigger>
+                    </ListView.Triggers>
+                </ListView>
+
+                <Label Text="Baum Nr." FontSize="Small"/>
+                <StackLayout Orientation="Horizontal">
+                    <Button Text="-" Command="{Binding DecreaseBaumNrCommand}"/>
+                    <Entry Text="{Binding Baum.Value.baumNr}"/>
+                    <Button Text="+" Command="{Binding IncreaseBaumNrCommand}"/>
+                </StackLayout>
+
+                <Label Text="Plaketten Nr." FontSize="Small"/>
+                <StackLayout Orientation="Horizontal">
+                    <Button Text="-" Command="{Binding DecreasePlakettenNrCommand}"/>
+                    <Entry Text="{Binding Baum.Value.plakettenNr}"/>
+                    <Button Text="+" Command="{Binding IncreasePlakettenNrCommand}"/>
+                </StackLayout>
+
+
+                <StackLayout Orientation="Horizontal">
+                    <Label  Text="Baumart deutsch" FontSize="Small"/>
+                    <Button Text="+" Command="{Binding AddBaumartCommand}"/>
+                </StackLayout>
+                <Entry  x:Name="entryBaumartDeutsch" Text="{Binding BaumartSelected.Value.NameDeutsch,Mode=TwoWay}" VerticalOptions="Fill">
+                    <Entry.Behaviors>
+                        <behaviors:EventToCommandBehavior
+						EventName="TextChanged"
+						Command="{Binding UpdateBaumartDeutschCommand}"/>
+                    </Entry.Behaviors>
+                </Entry>
+                <ListView  ItemsSource="{Binding BaumartDeutschFiltered}" VerticalOptions="Fill" HeightRequest="40">
+                    <ListView.ItemTemplate>
+                        <DataTemplate>
+                            <ViewCell>
+                                <ContentView>
+                                    <Label Text="{Binding NameDeutsch}"/>
+                                </ContentView>
+                            </ViewCell>
+                        </DataTemplate>
+                    </ListView.ItemTemplate>
+                    <ListView.Behaviors>
+                        <behaviors:EventToCommandBehavior
+						EventName="ItemTapped"
+						Command="{Binding BaumartDeutschWasSelectedCommand}"/>
+                    </ListView.Behaviors>
+                    <ListView.Triggers>
+                        <DataTrigger TargetType="ListView"  Binding="{Binding Source={x:Reference entryBaumartDeutsch}, Path=IsFocused}" Value="False">
+                            <Setter Property="IsVisible" Value="False"/>
+                        </DataTrigger>
+                    </ListView.Triggers>
+                </ListView>
+
+                <StackLayout Orientation="Horizontal">
+                    <Label  Text="Baumart botanisch" FontSize="Small"/>
+                    <Button Text="+" Command="{Binding AddBaumartCommand}"/>
+                </StackLayout>
+                <Entry  x:Name="entryBaumartBotanisch" Text="{Binding BaumartSelected.Value.NameBotanisch,Mode=TwoWay}" VerticalOptions="Fill">
+                    <Entry.Behaviors>
+                        <behaviors:EventToCommandBehavior
+						EventName="TextChanged"
+						Command="{Binding UpdateBaumartBotanischCommand}"/>
+                    </Entry.Behaviors>
+                </Entry>
+                <ListView  ItemsSource="{Binding BaumartBotanischFiltered}" VerticalOptions="Fill" HeightRequest="40">
+                    <ListView.ItemTemplate>
+                        <DataTemplate>
+                            <ViewCell>
+                                <ContentView>
+                                    <Label Text="{Binding NameBotanisch}"/>
+                                </ContentView>
+                            </ViewCell>
+                        </DataTemplate>
+                    </ListView.ItemTemplate>
+                    <ListView.Behaviors>
+                        <behaviors:EventToCommandBehavior
+						EventName="ItemTapped"
+						Command="{Binding BaumartBotanischWasSelectedCommand}"/>
+                    </ListView.Behaviors>
+                    <ListView.Triggers>
+                        <DataTrigger TargetType="ListView"  Binding="{Binding Source={x:Reference entryBaumartBotanisch}, Path=IsFocused}" Value="False">
+                            <Setter Property="IsVisible" Value="False"/>
+                        </DataTrigger>
+                    </ListView.Triggers>
+                </ListView>
+
+
+                <Label Text="Erstelldatum" FontSize="Small"/>
+                <Entry Text="{Binding Baum.Value.erstelldatum}" InputTransparent="True"/>
+
+                <Label Text="Kontrollintervall" FontSize="Small"/>
+                <Entry Text="{Binding Kontrolle.Value.kontrollintervall}"/>
+
+
+                <Label Text="Kontrolle" FontSize="Large"/>
+
+                <Label Text="Baumhöhenbereich [m]" FontSize="Small"/>
+                <Picker ItemsSource="{Binding AllBaumhöhenbereiche}" ItemDisplayBinding="{Binding name}" SelectedItem="{Binding BaumhöhenbereichSelected, Mode=TwoWay}" SelectedIndex="{Binding BaumhöhenbereichSelected.id, Converter={StaticResource IdToIndexConverter}}"/>
+
+                <Label Text="Baumhöhe [m]" FontSize="Small"/>
+                <Entry Text="{Binding Kontrolle.Value.baumhöhe}" Keyboard="Numeric">
+                    <Entry.Behaviors>
+                        <behaviors:EventToCommandBehavior
+						EventName="Completed"
+						Command="{Binding BaumhöheCompletedCommand}"/>
+                        <behaviors:EventToCommandBehavior
+                        EventName="Unfocused"
+                        Command="{Binding BaumhöheCompletedCommand}"/>
+                    </Entry.Behaviors>
+                </Entry>
+
+                <Label Text="Kronendurchmesser [m]" FontSize="Small"/>
+                <Entry Text="{Binding Kontrolle.Value.kronendurchmesser}" Keyboard="Numeric"/>
+
+                <Label Text="Stammdurchmesser [m]" FontSize="Small"/>
+                <Entry Text="{Binding Kontrolle.Value.stammdurchmesser}" Keyboard="Numeric"/>
+
+                <Label Text="Stammanzahl" FontSize="Small"/>
+                <Entry Text="{Binding Kontrolle.Value.stammanzahl}" Keyboard="Numeric"/>
+
+                <Label Text="Entwicklungsphase" FontSize="Small"/>
+                <Picker ItemsSource="{Binding AllEntwicklungsphasen}"  ItemDisplayBinding="{Binding name}" SelectedItem="{Binding EntwicklungsphaseSelected}" SelectedIndex="{Binding EntwicklungsphaseSelected.id,Converter={StaticResource IdToIndexConverter}}"/>
+
+                <!--<Label Text="Zustand" FontSize="Medium"/>-->
+                <Label Text="Schadsymptome" FontSize="Small"/>
+                <StackLayout Orientation="Horizontal" HorizontalOptions="StartAndExpand">
+                    <Entry x:Name="entrySchadsymptom" Text="{Binding Schadsymptom, Mode=TwoWay}">
+                        <Entry.Behaviors>
+                            <behaviors:EventToCommandBehavior
+						EventName="TextChanged"
+						Command="{Binding UpdateSchadsymptomCommand}"/>
+                        </Entry.Behaviors>
+                    </Entry>
+                    <Button Text="Hinzufügen" Command="{Binding SchadsymptomHinzufügenCommand}" CommandParameter="{Binding Source={x:Reference entrySchadsymptom},Path=Text}">
+                        <Button.Triggers>
+                            <!--<DataTrigger TargetType="Button"  Binding="{Binding Source={x:Reference entrySchadsymptom}, Path=Text.Length}" Value="0">
+                                <Setter Property="IsVisible" Value="False"/>
+                            </DataTrigger>-->
+                        </Button.Triggers>
+                    </Button>
+                </StackLayout>
+                <StackLayout Orientation="Vertical">
+                    <Label Text="Vorschläge:" FontSize="Micro" TextColor="Gray"/>
+                    <ListView  ItemsSource="{Binding SchadsymptomeFiltered}" VerticalOptions="Fill" HeightRequest="40">
+                        <ListView.ItemTemplate>
+                            <DataTemplate>
+                                <ViewCell>
+                                    <ContentView>
+                                        <Label Text="{Binding name}"/>
+                                    </ContentView>
+                                </ViewCell>
+                            </DataTemplate>
+                        </ListView.ItemTemplate>
+                        <ListView.Behaviors>
+                            <behaviors:EventToCommandBehavior
+						EventName="ItemTapped"
+						Command="{Binding SchadsymptomWasSelectedCommand}"/>
+                        </ListView.Behaviors>
+                        <!--<ListView.Triggers>
+                            <DataTrigger TargetType="ListView"  Binding="{Binding Source={x:Reference entrySchadsymptom}, Path=IsFocused}" Value="False">
+                                <Setter Property="IsVisible" Value="False"/>
+                            </DataTrigger>
+                        </ListView.Triggers>-->
+                    </ListView>
+                    <StackLayout.Triggers>
+                        <DataTrigger TargetType="StackLayout"  Binding="{Binding Source={x:Reference entrySchadsymptom}, Path=IsFocused}" Value="False">
+                            <Setter Property="IsVisible" Value="False"/>
+                        </DataTrigger>
+                    </StackLayout.Triggers>
+                </StackLayout>
+
+                <StackLayout Orientation="Vertical">
+                    <Label Text="Auswahl:" FontSize="Micro" TextColor="Gray"/>
+                    <Frame OutlineColor="Gray" CornerRadius="0" Padding="0">
+                        <ListView ItemsSource="{Binding SchadsymptomeSelected, Mode=TwoWay}" VerticalOptions="Fill" HeightRequest="80">
+                            <!--<ListView.Triggers>
+                        <DataTrigger TargetType="ListView" Binding="{Binding Path=ItemsSource.Count}" Value="1">
+                            <Setter Property="IsVisible" Value="False"/>
+                        </DataTrigger>
+                    </ListView.Triggers>-->
+
+                            <ListView.ItemTemplate>
+                                <DataTemplate>
+                                    <ViewCell>
+                                        <ViewCell.ContextActions>
+                                            <MenuItem Text="Löschen" IsDestructive="False" Command="{Binding Path=BindingContext.DeleteSchadsymptomSelectedCommand, Source={x:Reference BaumDetails}}" CommandParameter="{Binding .}"/>
+                                        </ViewCell.ContextActions>
+                                        <ContentView>
+                                            <StackLayout Orientation="Horizontal">
+                                                <Label Text="&#x2022;" />
+                                                <Label Text="{Binding name}"/>
+                                            </StackLayout>
+                                        </ContentView>
+                                    </ViewCell>
+                                </DataTemplate>
+                            </ListView.ItemTemplate>
+                        </ListView>
+                    </Frame>
+                </StackLayout>
+
+
+                <Label Text="Schädigungsgrad" FontSize="Small"/>
+                <Picker ItemsSource="{Binding AllSchädigungsgrade}"  ItemDisplayBinding="{Binding name}" SelectedItem="{Binding SchädigungsgradSelected}" SelectedIndex="{Binding SchädigungsgradSelected.id, Converter={StaticResource IdToIndexConverter}}"/>
+
+                <Label Text="Verkehrssicher" FontSize="Small"/>
+                <Button Text="{Binding Verkehrssicherheit,Converter={StaticResource VerkehrssicherheitToStringConverter}}" Command="{Binding ChangeVerkehrssicherheitCommand}"/>
+
+
+
+                <Label Text="Maßnahmen" FontSize="Small"/>
+                <StackLayout Orientation="Horizontal" HorizontalOptions="StartAndExpand">
+                    <Entry x:Name="entryMaßnahmen" Text="{Binding Maßnahmen, Mode=TwoWay}">
+                        <Entry.Behaviors>
+                            <behaviors:EventToCommandBehavior
+						EventName="TextChanged"
+						Command="{Binding UpdateMaßnahmenCommand}"/>
+                        </Entry.Behaviors>
+                    </Entry>
+                    <Button Text="Hinzufügen" Command="{Binding MaßnahmenHinzufügenCommand}" CommandParameter="{Binding Source={x:Reference entryMaßnahmen},Path=Text}">
+                        <!--<Button.Triggers>
+                            <DataTrigger TargetType="Button"  Binding="{Binding Source={x:Reference entryMaßnahmen}, Path=Text.Length}" Value="0">
+                                <Setter Property="IsVisible" Value="False"/>
+                            </DataTrigger>
+                        </Button.Triggers>-->
+                    </Button>
+                </StackLayout>
+                <StackLayout Orientation="Vertical">
+                    <Label Text="Vorschläge:" FontSize="Micro" TextColor="Gray"/>
+                    <ListView  ItemsSource="{Binding MaßnahmenFiltered}" VerticalOptions="Fill" HeightRequest="40">
+                        <ListView.ItemTemplate>
+                            <DataTemplate>
+                                <ViewCell>
+                                    <ContentView>
+                                        <Label Text="{Binding name}"/>
+                                    </ContentView>
+                                </ViewCell>
+                            </DataTemplate>
+                        </ListView.ItemTemplate>
+                        <ListView.Behaviors>
+                            <behaviors:EventToCommandBehavior
+						EventName="ItemTapped"
+						Command="{Binding MaßnahmenWasSelectedCommand}"/>
+                        </ListView.Behaviors>
+                    </ListView>
+                    <StackLayout.Triggers>
+                        <DataTrigger TargetType="StackLayout"  Binding="{Binding Source={x:Reference entryMaßnahmen}, Path=IsFocused}" Value="False">
+                            <Setter Property="IsVisible" Value="False"/>
+                        </DataTrigger>
+                    </StackLayout.Triggers>
+                </StackLayout>
+
+                <StackLayout Orientation="Vertical">
+                    <Label Text="Auswahl:" FontSize="Micro" TextColor="Gray"/>
+                    <Frame OutlineColor="Gray" CornerRadius="0" Padding="0">
+                        <ListView ItemsSource="{Binding MaßnahmenSelected}" HeightRequest="80">
+                            <!--<ListView.Triggers>
+                    <DataTrigger TargetType="ListView" Binding="{Binding Path=ItemsSource.Count}" Value="1">
+                        <Setter Property="IsVisible" Value="False"/>
+                    </DataTrigger>
+                </ListView.Triggers>-->
+                            <ListView.ItemTemplate>
+                                <DataTemplate>
+                                    <ViewCell>
+                                        <ViewCell.ContextActions>
+                                            <MenuItem Text="Löschen" IsDestructive="False" Command="{Binding Path=BindingContext.DeleteMaßnahmeSelectedCommand, Source={x:Reference BaumDetails}}" CommandParameter="{Binding .}">
+                                            </MenuItem>
+                                        </ViewCell.ContextActions>
+                                        <ContentView>
+                                            <StackLayout Orientation="Horizontal">
+                                                <Label Text="&#x2022;" />
+                                                <Label Text="{Binding name}"/>
+                                            </StackLayout>
+                                        </ContentView>
+                                    </ViewCell>
+                                </DataTemplate>
+                            </ListView.ItemTemplate>
+                        </ListView>
+                    </Frame>
+                </StackLayout>
+
+
+                <Label Text="Ausführen Bis" FontSize="Small"/>
+                <Picker ItemsSource="{Binding AllAusführenBis}"  ItemDisplayBinding="{Binding name}" SelectedItem="{Binding AusführenBisSelected}" SelectedIndex="{Binding AusführenBisSelected.id, Converter={StaticResource IdToIndexConverter}}"/>
+            </StackLayout>
+        </ScrollView>
+        <StackLayout Orientation="Horizontal" HorizontalOptions="FillAndExpand" BackgroundColor="LightGray">
+            <Button Text="Speichern" Command="{Binding SaveCommand}"/>
+            <Button Text="Zurück" Command="{Binding BackCommand}"/>
+        </StackLayout>
+    </StackLayout>
+    <!--<ContentPage.Resources>
+        <ResourceDictionary>
+            <converters:VerkehrssicherheitToStringConverter x:Key="VerkehrssicherheitToStringConverter"/>
+        </ResourceDictionary>
+    </ContentPage.Resources>
+    <StackLayout Orientation="Vertical" Padding="30">
+        <ScrollView Orientation="Vertical">
+            <StackLayout Orientation="Vertical" InputTransparent="True">
+                <Button HeightRequest="0" WidthRequest="1" /> 
+                <Label Text="Baumdaten" FontSize="Large"/>
+                <Label Text="Straße" FontSize="Small"/>
+                <Entry Text="{Binding BaumItem.straße.name, Mode=TwoWay}"/>
+                <Label Text="Baum Nr." FontSize="Small"/>
+                <Entry Text="{Binding BaumItem.baum.baumNr}"/>
+                <Label Text="Plaketten Nr." FontSize="Small"/>
+                <Entry Text="{Binding BaumItem.baum.plakettenNr}"/>
+                
+                <Label  Text="Baumart deutsch" FontSize="Small"/>
+                <Entry Text="{Binding BaumItem.baumart.NameDeutsch}"/>
+                <Label  Text="Baumart botanisch" FontSize="Small"/>
+                <Entry Text="{Binding BaumItem.baumart.NameBotanisch}"/>
+                <Label Text="Erstelldatum" FontSize="Small"/>
+                <Entry Text="{Binding BaumItem.baum.erstelldatum}" InputTransparent="True"/>
+                <Label Text="Kontrollintervall" FontSize="Small"/>
+                <Entry Text="{Binding BaumItem.kontrolle.kontrollintervall}"/>
+
+                <Label Text="Kontrolle" FontSize="Large"/>
+                <Label Text="Grunddaten" FontSize="Medium"/>
+                <Label Text="Baumhöhenbereich [m]" FontSize="Small"/>
+                <Entry Text="{Binding BaumItem.baumhöhenbereich.name}"/>
+                
+                <Label Text="Baumhöhe [m]" FontSize="Small"/>
+                <Entry Text="{Binding BaumItem.kontrolle.baumhöhe}" Keyboard="Numeric"/>
+                
+                <Label Text="Kronendurchmesser [m]" FontSize="Small"/>
+                <Entry Text="{Binding BaumItem.kontrolle.kronendurchmesser}" Keyboard="Numeric"/>
+
+                <Label Text="Stammdurchmesser [m]" FontSize="Small"/>
+                <Entry Text="{Binding BaumItem.kontrolle.stammdurchmesser}" Keyboard="Numeric"/>
+
+                <Label Text="Stammanzahl" FontSize="Small"/>
+                <Entry Text="{Binding BaumItem.kontrolle.stammanzahl}" Keyboard="Numeric"/>
+
+                <Label Text="Entwicklungsphase" FontSize="Small"/>
+                <Entry Text="{Binding BaumItem.entwicklungsphase.name}"/>
+
+                <Label Text="Schadsymptome" FontSize="Small"/>
+                <ListView ItemsSource="{Binding Schadsymptome}" HeightRequest="40">
+                    <ListView.ItemTemplate>
+                        <DataTemplate>
+                            <ViewCell>
+                                <ContentView>
+                                    <Label Text="{Binding .}"/>
+                                </ContentView>
+                            </ViewCell>
+                        </DataTemplate>
+                    </ListView.ItemTemplate>
+                </ListView>
+
+
+
+                <Label Text="Schädigungsgrad" FontSize="Small"/>
+                <Entry Text="{Binding BaumItem.schädigungsgrad.name}"/>
+
+                <Label Text="Verkehrssicher" FontSize="Small"/>
+                <Button Text="{Binding Verkehrssicherheit,Converter={StaticResource VerkehrssicherheitToStringConverter}}" Command="{Binding ChangeVerkehrssicherheitCommand}"/>
+
+                <Label Text="Maßnahmen" FontSize="Medium"/>
+                <ListView ItemsSource="{Binding Maßnahmen}" HeightRequest="40">
+                    <ListView.ItemTemplate>
+                        <DataTemplate>
+                            <ViewCell>
+                                <ContentView>
+                                    <Label Text="{Binding .}"/>
+                                </ContentView>
+                            </ViewCell>
+                        </DataTemplate>
+                    </ListView.ItemTemplate>
+                </ListView>
+
+                <Label Text="Ausführen Bis" FontSize="Small"/>
+                <Entry Text="{Binding BaumItem.ausführenBis.name}"/>
+            </StackLayout>
+        </ScrollView>
+        <StackLayout Orientation="Horizontal" HorizontalOptions="FillAndExpand">
+            --><!--<Button Text="Speichern" Command="{Binding SaveCommand}"/>--><!--
+            <Button Text="Zurück" Command="{Binding BackCommand}"/>
+        </StackLayout>
+    </StackLayout>-->
+</ContentPage>
