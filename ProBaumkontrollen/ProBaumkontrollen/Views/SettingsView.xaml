@@ -6,5 +6,10 @@
              xmlns:viewModelBase="clr-namespace:ProBaumkontrollen.ViewModels.Base;assembly=ProBaumkontrollen"           
              viewModelBase:ViewModelLocator.AutoWireViewModel="true"
              Title="Einstellungen">
-    
+    <Grid>
+        <Label Text="Noch nichts los hier"/>
+        <Button Text="Zurück" Command="{Binding BackCommand}"/>
+    </Grid>
+
+
 </ContentPage>
