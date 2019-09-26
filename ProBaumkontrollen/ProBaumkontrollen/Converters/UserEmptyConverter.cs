@@ -6,7 +6,7 @@ using Xamarin.Forms;
 
 namespace ProBaumkontrollen.Converters
 {
-    public class ProjectEmptyConverter:IValueConverter
+    public class UserEmptyConverter:IValueConverter
     {
         public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
         {
@@ -15,7 +15,7 @@ namespace ProBaumkontrollen.Converters
                 string var = System.Convert.ToString(value);
                 if (string.IsNullOrWhiteSpace(var))
                 {
-                    return "Kein Projekt gewählt";
+                    return "Kein Benutzer gewählt!";
 
                 }
                 else
@@ -25,7 +25,7 @@ namespace ProBaumkontrollen.Converters
             }
             else
             {
-                return "Kein Projekt gewählt";
+                return "Kein Benutzer gewählt!";
             }
 
 
@@ -33,14 +33,14 @@ namespace ProBaumkontrollen.Converters
 
         public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
         {
-            if  (value is string)
+            if (value is string)
             {
                 return System.Convert.ToString(value);
-            }else
+            }
+            else
             {
                 return "";
             }
-
         }
     }
 }

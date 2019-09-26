@@ -18,13 +18,55 @@ namespace ProBaumkontrollen.ViewModels
         public ICommand NeuaufnahmeCommand => new Command(async () => await NeuaufnahmeAsync());
         public ICommand BaumlisteCommand => new Command(async () => await BaumlisteAsync());
         public ICommand KontrolleCommand => new Command(async () => await KontrolleAsync());
+        public ICommand ChooseUserCommand => new Command(async () => await ChooseUser());
+        public ICommand AddUserCommand => new Command(async () => await AddUser());
         public ICommand ChooseProjectCommand => new Command(async () => await ChooseProject());
         public ICommand AddProjectCommand => new Command(async () => await AddProject());
 
-
-
-
         #region Properties
+        private string _selectedUserName;
+        public string SelectedUserName
+        {
+            get { return _selectedUserName; }
+            set
+            {
+                _selectedUserName = value;
+                RaisePropertyChanged(() => SelectedUserName);
+            }
+        }
+
+        private string _enteredUserName;
+        public string EnteredUserName
+        {
+            get { return _enteredUserName; }
+            set
+            {
+                _enteredUserName = value;
+                RaisePropertyChanged(() => EnteredUserName);
+            }
+        }
+
+        private string _activeUser;
+        public string ActiveUser
+        {
+            get { return _activeUser; }
+            set
+            {
+                _activeUser = value;
+                RaisePropertyChanged(() => ActiveUser);
+            }
+        }
+
+        private ObservableCollection<string> _allUsers;
+        public ObservableCollection<string> AllUsers
+        {
+            get { return _allUsers; }
+            set
+            {
+                _allUsers = value;
+                RaisePropertyChanged(() => AllUsers);
+            }
+        }
 
         private string _selectedProjectName;
         public string SelectedProjectName
@@ -74,17 +116,49 @@ namespace ProBaumkontrollen.ViewModels
 
         public MainViewModel()
         {
+            // Only for Test purpose, normally all projects in internal app storage should be loaded
+            // and the active project shpuld be read out the app settings
             AllProjects = new ObservableCollection<string>();
             AllProjects.Add("ErstesProjekt");
 
             ActiveProject = "";
 
+            AllUsers = new ObservableCollection<string>();
+            AllUsers.Add("Max");
+            ActiveUser = "";
+
+        }
+
+        private async Task ChooseUser()
+        {
+            ActiveUser = SelectedUserName;
+        }
+
+        private async Task AddUser()
+        {
+            // Check for validity 
+            if (string.IsNullOrWhiteSpace(_enteredUserName))
+            {
+                await DialogService.ShowAlertAsync("Es muss ein Benutzer angegeben werden.", "Warnung", "OK");
+                return;
+            }
+
+            if (_allUsers.Contains(_enteredUserName))
+            {
+                await DialogService.ShowAlertAsync("Der Benutzer \"" + _enteredUserName + "\" existiert bereits. Bitte geben sie einen anderen Namen ein.", "Warnung", "OK");
+                return;
+            }
+
+            _allUsers.Add(_enteredUserName);
+            ActiveUser = _enteredUserName;
+            await DialogService.ShowAlertAsync("Der Benutzer \"" + _enteredUserName + "\" wurde angelegt.", "Hinweis", "OK");
+            //RaisePropertyChanged(() => AllUsers);
+            //DataService.CreateUser();
         }
 
         private async Task ChooseProject()
         {
             ActiveProject = SelectedProjectName;
-            //_activeProject = await DataService.ChooseProject();
         }
 
         private async Task AddProject()

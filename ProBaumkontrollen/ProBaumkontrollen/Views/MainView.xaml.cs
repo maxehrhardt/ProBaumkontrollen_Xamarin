@@ -18,6 +18,15 @@ namespace ProBaumkontrollen.Views
         public MainView()
         {
             InitializeComponent();
+
+            //Initialize Visual States for User entry
+            VisualStateManager.GoToState(userEntryStack, "NormalState");
+            foreach (View child in userEntryStack.Children)
+            {
+                VisualStateManager.GoToState(child, "NormalState");
+            }
+
+            //Initialize Visual States for Project entry
             VisualStateManager.GoToState(projectEntryStack, "NormalState");
             foreach (View child in projectEntryStack.Children)
             {
@@ -43,7 +52,7 @@ namespace ProBaumkontrollen.Views
             }
         }
 
-        private void AcceptDecline_Clicked(object sender, EventArgs e)
+        private void AcceptDeclineProject_Clicked(object sender, EventArgs e)
         {
             VisualStateManager.GoToState(projectEntryStack, "NormalState");
             foreach (View child in projectEntryStack.Children)
@@ -51,6 +60,31 @@ namespace ProBaumkontrollen.Views
                 VisualStateManager.GoToState(child, "NormalState");
             }
         }
+        private void FindUser_Clicked(object sender, EventArgs e)
+        {
+            VisualStateManager.GoToState(userEntryStack, "FindUserState");
+            foreach (View child in userEntryStack.Children)
+            {
+                VisualStateManager.GoToState(child, "FindUserState");
+            }
+        }
 
+        private void AddUser_Clicked(object sender, EventArgs e)
+        {
+            VisualStateManager.GoToState(userEntryStack, "AddUserState");
+            foreach (View child in userEntryStack.Children)
+            {
+                VisualStateManager.GoToState(child, "AddUserState");
+            }
+        }
+
+        private void AcceptDeclineUser_Clicked(object sender, EventArgs e)
+        {
+            VisualStateManager.GoToState(userEntryStack, "NormalState");
+            foreach (View child in userEntryStack.Children)
+            {
+                VisualStateManager.GoToState(child, "NormalState");
+            }
+        }
     }
 }
